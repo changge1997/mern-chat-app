@@ -8,7 +8,8 @@
     "npm": "8.5.5"
   },
   "scripts": {
-    "start": "nodemon --delay 500ms backend/server.js"
+    "start": "nodemon --delay 500ms backend/server.js",
+    "heroku-postbuild": "cd frontend && npm install --only=dev && npm install && npm run build"
   },
   "author": "Chang Ge",
   "license": "ISC",
