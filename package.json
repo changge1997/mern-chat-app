@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.5.5"
+  },
   "scripts": {
     "start": "nodemon --delay 500ms backend/server.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUTION=false npm install --prefix frontend && npm run build --prefix frontend "
