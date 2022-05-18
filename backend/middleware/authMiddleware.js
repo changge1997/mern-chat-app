@@ -22,6 +22,9 @@ const protect = asyncHandler(async (req, res, next) => {
       res.status(401);
       throw new Error("Not authorized, token failed");
     }
+  } else {
+    req.user = await User.findById(req.session.userId);
+    next();
   }
 
   if (!token) {

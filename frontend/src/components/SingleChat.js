@@ -11,6 +11,12 @@ import ProfileModal from "./miscellaneous/ProfileModal";
 import ScrollableChat from "./ScrollableChat";
 import Lottie from "lottie-react";
 import animationData from "../animations/typing.json";
+import Picker from "emoji-picker-react";
+import { BsEmojiSmile } from "react-icons/bs";
+import { MdOutlineAttachFile } from "react-icons/md";
+import { AiOutlineFileGif } from "react-icons/ai";
+
+import { IoMdSend } from "react-icons/io";
 
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
@@ -27,6 +33,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
 
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -37,6 +45,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
+
+  const handleEmojiPickerhideShow = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleEmojiClick = (event, emojiObject) => {
+    let mesg = newMessage;
+    mesg += emojiObject.emoji;
+    setNewMessage(mesg);
+  };
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -71,7 +89,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    //event.key === "Enter" &&
+    if (newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -221,7 +240,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             )}
 
             <FormControl
-              onKeyDown={sendMessage}
+              //onKeyDown={sendMessage}
               id="first-name"
               isRequired
               mt={3}
@@ -238,13 +257,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+
+              <Box
+                d="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                bg="white"
+                w="100%"
+                p="5px 10px 5px 10px"
+                borderWidth="5px"
+              >
+                <Input
+                  px={4}
+                  className="input-container"
+                  //variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                />
+                <IconButton onClick={sendMessage}>
+                  <IoMdSend />
+                </IconButton>
+              </Box>
+              <Box d="flex" p="5px 10px 5px 10px">
+                <BsEmojiSmile
+                  fontSize="10xl"
+                  px={4}
+                  m={1}
+                  onClick={handleEmojiPickerhideShow}
+                />
+                {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
+                <AiOutlineFileGif fontSize="10xl" px={4} />
+                <MdOutlineAttachFile fontSize="10xl" px={4} />
+              </Box>
             </FormControl>
           </Box>
         </>

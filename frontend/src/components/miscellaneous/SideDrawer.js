@@ -47,7 +47,6 @@ function SideDrawer() {
     setChats,
   } = ChatState();
 
-  console.log("user is" + user.name);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
